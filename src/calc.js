@@ -17,4 +17,25 @@ function divide(a, b) {
   return a / b;
 }
 
-module.exports = { add, subtract, multiply, divide };
+function power(a, b) {
+  return Math.pow(a, b);
+}
+
+function modulo(a, b) {
+  return a % b;
+}
+
+function square(a) {
+  return a * a;
+}
+
+// 只写这一次导出即可
+module.exports = { 
+  add, 
+  subtract, 
+  multiply, 
+  divide, 
+  power, 
+  modulo, 
+  square 
+};
