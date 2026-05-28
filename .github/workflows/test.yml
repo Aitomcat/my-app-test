@@ -1,4 +1,4 @@
-name: 运行测试与覆盖率检查
+name: 测试、覆盖率与SonarCloud质量门禁
 
 on:
   push:
@@ -7,12 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  test-and-quality-gate:
     runs-on: ubuntu-latest
 
     steps:
     - name: 检出代码
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: 安装 Node.js
       uses: actions/setup-node@v4
@@ -22,5 +24,17 @@ jobs:
     - name: 安装依赖
       run: npm ci
 
-    - name: 运行测试并检查覆盖率
+    - name: 运行测试并生成覆盖率
       run: npx jest --coverage
+
+    - name: SonarCloud 扫描
+      uses: SonarSource/sonarqube-scan-action@v4
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: 检查 SonarCloud 质量门状态
+      uses: SonarSource/sonarqube-quality-gate-action@master
+      with:
+        pollingTimeoutSec: 300
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
