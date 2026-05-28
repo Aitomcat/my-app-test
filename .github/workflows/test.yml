@@ -28,12 +28,12 @@ jobs:
       run: npx jest --coverage
 
     - name: SonarCloud 扫描
-      uses: SonarSource/sonarqube-scan-action@v4
+      uses: SonarSource/sonarqube-scan-action@v6
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: 检查 SonarCloud 质量门状态
-      uses: SonarSource/sonarqube-quality-gate-action@master
+      uses: SonarSource/sonarqube-quality-gate-action@v1
       with:
         pollingTimeoutSec: 300
       env:
